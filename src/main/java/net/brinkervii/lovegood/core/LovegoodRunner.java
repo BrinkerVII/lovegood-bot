@@ -22,9 +22,9 @@ public class LovegoodRunner {
 		ArrayList<ConfigurationClass> configurables = new ArrayList<>();
 		ArrayList<Runnable> runnables = new ArrayList<>();
 
-		log.info(String.format("Running classes of type %s" , scanner.getClazz().getName()));
+		log.info(String.format("Running classes of type %s", scanner.getClazz().getName()));
 		for (Class<?> clazz : scanner.getClasses()) {
-			if(!clazz.isInterface()) {
+			if (!clazz.isInterface()) {
 				try {
 					Object o = clazz.newInstance();
 					assert o != null;
@@ -62,8 +62,18 @@ public class LovegoodRunner {
 	}
 
 	public void stop() {
-		for(Thread thread : threads) {
+		for (Thread thread : threads) {
 			thread.interrupt();
 		}
+	}
+
+	public int running() {
+		int counter = 0;
+		for (Thread t : threads) {
+			if (t.isAlive()) {
+				counter++;
+			}
+		}
+		return counter;
 	}
 }
