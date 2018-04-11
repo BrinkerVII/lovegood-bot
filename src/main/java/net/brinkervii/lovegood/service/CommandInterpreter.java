@@ -3,7 +3,7 @@ package net.brinkervii.lovegood.service;
 import lombok.extern.slf4j.Slf4j;
 import net.brinkervii.lovegood.annotation.AnnotationScanner;
 import net.brinkervii.lovegood.annotation.LovegoodCommand;
-import net.brinkervii.lovegood.annotation.Service;
+import net.brinkervii.lovegood.annotation.LovegoodService;
 import net.brinkervii.lovegood.core.LovegoodConstants;
 import net.brinkervii.lovegood.core.LovegoodContext;
 import net.brinkervii.lovegood.core.LovegoodContextHolder;
@@ -14,7 +14,7 @@ import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import java.lang.annotation.Annotation;
 import java.util.HashMap;
 
-@Service
+@LovegoodService
 @Slf4j
 public class CommandInterpreter {
 	HashMap<String, RunnableCommand> commands = new HashMap<>();

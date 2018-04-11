@@ -1,12 +1,12 @@
 package net.brinkervii.lovegood.service;
 
-import net.brinkervii.lovegood.annotation.Service;
+import net.brinkervii.lovegood.annotation.LovegoodService;
 import net.brinkervii.lovegood.core.LovegoodContext;
 import net.brinkervii.lovegood.jda.LovegoodListener;
 import net.dv8tion.jda.client.entities.IncomingFriendRequest;
 import net.dv8tion.jda.client.events.relationship.FriendRequestReceivedEvent;
 
-@Service
+@LovegoodService
 public class FriendRequestResponder {
 	LovegoodContext context;
 

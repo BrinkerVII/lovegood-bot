@@ -3,11 +3,9 @@ package net.brinkervii.lovegood.core;
 import lombok.extern.slf4j.Slf4j;
 import net.brinkervii.lovegood.annotation.AnnotationScanner;
 import net.brinkervii.lovegood.annotation.Bean;
-import net.brinkervii.lovegood.annotation.Service;
+import net.brinkervii.lovegood.annotation.LovegoodService;
 import net.brinkervii.lovegood.exception.NotAnAnnotationException;
-import net.dv8tion.jda.core.JDA;
 
-import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -23,7 +21,7 @@ public class ServiceRunner implements Runnable {
 		LovegoodContext context = LovegoodContextHolder.getInstance().getContext();
 
 		try {
-			AnnotationScanner scanner = new AnnotationScanner(Service.class);
+			AnnotationScanner scanner = new AnnotationScanner(LovegoodService.class);
 			scanner.scan(LovegoodConstants.PACKAGE);
 
 			for (Class<?> clazz : scanner.getClasses()) {
