@@ -15,7 +15,7 @@ public class LovegoodBoot {
 		try {
 			for (Class<?> clazz : Arrays.asList(Configuration.class, Bean.class)) {
 				AnnotationScanner scanner = new AnnotationScanner(clazz);
-				scanner.scan("net.brinkervii.lovegood");
+				scanner.scan(LovegoodConstants.PACKAGE);
 				LovegoodRunner runner = new LovegoodRunner(scanner);
 				runners.add(runner);
 				runner.run();

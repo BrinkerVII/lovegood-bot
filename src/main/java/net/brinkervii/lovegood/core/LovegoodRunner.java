@@ -26,7 +26,14 @@ public class LovegoodRunner {
 		for (Class<?> clazz : scanner.getClasses()) {
 			if (!clazz.isInterface()) {
 				try {
-					Object o = clazz.newInstance();
+					Object o;
+
+					if (InstanceCache.getInstance().contains(clazz)) {
+						o = InstanceCache.getInstance().get(clazz);
+					} else {
+						o = clazz.newInstance();
+					}
+
 					assert o != null;
 					pool.add(o);
 
