@@ -94,5 +94,8 @@ hs_err_pid*
 # Maven crapola
 target/
 
+# Private files
+*.private.*
+
 
 # End of https://www.gitignore.io/api/java,intellij
