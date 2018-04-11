@@ -3,14 +3,14 @@ package net.brinkervii.lovegood.jda;
 import net.dv8tion.jda.core.AccountType;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.JDABuilder;
-import net.dv8tion.jda.core.hooks.ListenerAdapter;
 
 import javax.security.auth.login.LoginException;
 
 public class JDAManager {
 	private JDA jda;
 
-	public JDAManager() {}
+	public JDAManager() {
+	}
 
 	public void build(String token) throws LoginException, InterruptedException {
 		JDA jda = new JDABuilder(AccountType.BOT)
@@ -24,8 +24,8 @@ public class JDAManager {
 		return jda != null;
 	}
 
-	public void addListener(ListenerAdapter listenerAdapter) {
-		jda.addEventListener(listenerAdapter);
+	public void addListener(LovegoodListener listener) {
+		jda.addEventListener(listener);
 	}
 
 	public JDA jda() {
