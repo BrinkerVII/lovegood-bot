@@ -49,6 +49,7 @@ public class CommandInterpreter {
 					InjectionProfile cmdInjectionProfile = new InjectionProfile()
 							.provide(context)
 							.provide(event)
+							.provide(context.getJDA())
 							.provide(interpreter)
 							.lock();
 
