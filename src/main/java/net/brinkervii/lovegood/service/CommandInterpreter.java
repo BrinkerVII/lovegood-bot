@@ -50,16 +50,15 @@ public class CommandInterpreter {
 							.provide(context)
 							.provide(event)
 							.provide(context.getJDA())
-							.provide(interpreter)
-							.lock();
+							.provide(interpreter);
 
-					String command = content.substring(context.getCommandPrefix().length());
-					if (commands.containsKey(command)) {
-						ParsedCommandInput input = new ParsedCommandInput(command);
-						cmdInjectionProfile.apply(input);
+					ParsedCommandInput input = new ParsedCommandInput();
+					cmdInjectionProfile.apply(input);
 
+					if (commands.containsKey(input.command())) {
 						try {
-							RunnableCommand commandInstance = commands.get(command).newInstance();
+							cmdInjectionProfile.provide(input).lock();
+							RunnableCommand commandInstance = commands.get(input.command()).newInstance();
 							cmdInjectionProfile.apply(commandInstance);
 							runCommand(commandInstance);
 						} catch (InstantiationException | IllegalAccessException e) {
