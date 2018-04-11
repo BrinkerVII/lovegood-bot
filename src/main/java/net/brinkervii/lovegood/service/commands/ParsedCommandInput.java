@@ -1,4 +1,4 @@
-package net.brinkervii.lovegood.service;
+package net.brinkervii.lovegood.service.commands;
 
 import net.brinkervii.lovegood.core.LovegoodContext;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;

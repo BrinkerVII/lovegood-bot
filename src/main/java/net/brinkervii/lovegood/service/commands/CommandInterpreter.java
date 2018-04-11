@@ -1,4 +1,4 @@
-package net.brinkervii.lovegood.service;
+package net.brinkervii.lovegood.service.commands;
 
 import lombok.extern.slf4j.Slf4j;
 import net.brinkervii.lovegood.annotation.AnnotationScanner;

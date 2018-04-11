@@ -1,8 +1,8 @@
 package net.brinkervii.lovegood.commands;
 
 import net.brinkervii.lovegood.annotation.LovegoodCommand;
-import net.brinkervii.lovegood.service.CommandInterpreter;
-import net.brinkervii.lovegood.service.RunnableCommand;
+import net.brinkervii.lovegood.service.commands.CommandInterpreter;
+import net.brinkervii.lovegood.service.commands.RunnableCommand;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
 @LovegoodCommand(name = "commands")
