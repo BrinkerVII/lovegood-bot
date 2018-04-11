@@ -14,11 +14,13 @@ import java.util.ArrayList;
 @Slf4j
 public class ServiceRunner implements Runnable {
 	private ArrayList<Object> services;
+	private InjectionProfile injectionProfile = new InjectionProfile();
 
 	@Override
 	public void run() {
 		services = new ArrayList<>();
 		LovegoodContext context = LovegoodContextHolder.getInstance().getContext();
+		injectionProfile.provide(context, context.getJDA());
 
 		try {
 			AnnotationScanner scanner = new AnnotationScanner(LovegoodService.class);
@@ -28,8 +30,7 @@ public class ServiceRunner implements Runnable {
 				log.info("Found service " + clazz.getName());
 				Object o = clazz.newInstance();
 				services.add(o);
-
-				LovegoodContextHolder.putObjectFields(clazz, o);
+				injectionProfile.apply(o);
 
 				for (Method method : clazz.getDeclaredMethods()) {
 					if (method.getName().equals("init")) {

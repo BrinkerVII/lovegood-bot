@@ -5,5 +5,6 @@ import java.lang.annotation.RetentionPolicy;
 
 @Retention(RetentionPolicy.RUNTIME)
 public @interface LovegoodCommand {
-	String commandString();
+	String name();
+	String description() default "";
 }
