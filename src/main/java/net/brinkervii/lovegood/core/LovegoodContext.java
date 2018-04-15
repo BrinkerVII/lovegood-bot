@@ -6,6 +6,8 @@ import net.brinkervii.lovegood.service.ClashUpdater;
 import net.dv8tion.jda.core.JDA;
 
 import javax.security.auth.login.LoginException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 @Slf4j
 public class LovegoodContext {
@@ -13,6 +15,8 @@ public class LovegoodContext {
 	private ApplicationProperties properties = new ApplicationProperties();
 	private String commandPrefix = ">";
 	private ClashUpdater clashUpdater;
+	private Date startDate = new Date();
+	private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
 	LovegoodContext() {
 		log.info(String.format("Debug mode: %s", String.valueOf(debug())));
@@ -51,5 +55,13 @@ public class LovegoodContext {
 		}
 
 		return false;
+	}
+
+	public SimpleDateFormat dateFormat() {
+		return dateFormat;
+	}
+
+	public String startDateAsString() {
+		return dateFormat.format(startDate);
 	}
 }
