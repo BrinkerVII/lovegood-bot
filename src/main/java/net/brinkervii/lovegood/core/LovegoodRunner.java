@@ -69,6 +69,7 @@ public class LovegoodRunner {
 	}
 
 	public void stop() {
+		log.info(String.format("Runner is stopping %d threads", threads.size()));
 		for (Thread thread : threads) {
 			thread.interrupt();
 		}

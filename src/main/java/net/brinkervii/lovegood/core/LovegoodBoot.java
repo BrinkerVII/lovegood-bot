@@ -26,6 +26,15 @@ public class LovegoodBoot {
 			e.printStackTrace();
 		}
 
+		Runtime.getRuntime().addShutdownHook(new Thread() {
+			@Override
+			public void run() {
+				for (LovegoodRunner runner : runners) {
+					runner.stop();
+				}
+			}
+		});
+
 		boolean running = true;
 		while (running) {
 			int counter = 0;
