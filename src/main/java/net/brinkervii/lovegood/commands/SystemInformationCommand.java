@@ -25,7 +25,8 @@ public class SystemInformationCommand implements RunnableCommand {
 				.setTitle("Lovegood bot system information")
 				.setDescription("This is the system information of the Lovegood bot instance that is online in this server")
 				.setColor(Color.red)
-				.addField("Debug mode:", debugString, false)
+				.addField("Debug mode", debugString, false)
+				.addField("Bot start date and time", context.startDateAsString(), false)
 				.build();
 
 		event.getChannel().sendMessage(embed).complete();
