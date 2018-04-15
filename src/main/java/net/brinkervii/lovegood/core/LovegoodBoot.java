@@ -5,6 +5,7 @@ import net.brinkervii.lovegood.annotation.Bean;
 import net.brinkervii.lovegood.annotation.Configuration;
 import net.brinkervii.lovegood.exception.InitializationException;
 import net.brinkervii.lovegood.exception.NotAnAnnotationException;
+import net.brinkervii.lovegood.util.HibernateUtil;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -26,14 +27,14 @@ public class LovegoodBoot {
 			e.printStackTrace();
 		}
 
-		Runtime.getRuntime().addShutdownHook(new Thread() {
-			@Override
-			public void run() {
-				for (LovegoodRunner runner : runners) {
-					runner.stop();
-				}
+		Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+			for (LovegoodRunner runner : runners) {
+				runner.stop();
 			}
-		});
+
+			HibernateUtil.shutdown();
+			System.out.println("Finished running shutdown hook");
+		}));
 
 		boolean running = true;
 		while (running) {

@@ -1,10 +1,13 @@
 package net.brinkervii.lovegood.core;
 
+import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.*;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Properties;
+import java.util.function.BiConsumer;
 
 @Slf4j
 public class ApplicationProperties {
@@ -72,5 +75,39 @@ public class ApplicationProperties {
 
 	public boolean containsKey(String key) {
 		return properties.containsKey(key);
+	}
+
+	public Properties extract(ExtractionProfile profile) {
+		Properties target = new Properties();
+		profile.keyMap().forEach((withoutPrefix, withPrefix) -> {
+			if (properties.containsKey(withPrefix)) {
+				target.put(withoutPrefix, properties.get(withPrefix));
+			}
+		});
+
+		return target;
+	}
+
+	public void forEach(BiConsumer<? super String, ? super String> consumer) {
+		properties.forEach(consumer);
+	}
+
+	@Data
+	public static class ExtractionProfile {
+		private final String[] keys;
+		private String prefix = "";
+
+		public ExtractionProfile(String... keys) {
+			this.keys = keys;
+		}
+
+		public Map<String, String> keyMap() {
+			HashMap<String, String> map = new HashMap<>();
+			for (String key : keys) {
+				map.put(key, prefix + key);
+			}
+
+			return map;
+		}
 	}
 }

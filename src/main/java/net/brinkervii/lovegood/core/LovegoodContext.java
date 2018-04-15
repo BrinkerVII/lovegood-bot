@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import net.brinkervii.lovegood.jda.JDAManager;
 import net.brinkervii.lovegood.service.ClashUpdater;
 import net.dv8tion.jda.core.JDA;
+import org.hibernate.SessionFactory;
 
 import javax.security.auth.login.LoginException;
 import java.text.SimpleDateFormat;
@@ -17,6 +18,7 @@ public class LovegoodContext {
 	private ClashUpdater clashUpdater;
 	private Date startDate = new Date();
 	private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+	private SessionFactory sessionFactory;
 
 	LovegoodContext() {
 		log.info(String.format("Debug mode: %s", String.valueOf(debug())));
@@ -63,5 +65,13 @@ public class LovegoodContext {
 
 	public String startDateAsString() {
 		return dateFormat.format(startDate);
+	}
+
+	public ApplicationProperties getProperties() {
+		return properties;
+	}
+
+	public void setHibernateSessionFactory(SessionFactory sessionFactory) {
+		this.sessionFactory = sessionFactory;
 	}
 }
