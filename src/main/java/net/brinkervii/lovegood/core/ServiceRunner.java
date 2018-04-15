@@ -28,6 +28,12 @@ public class ServiceRunner implements Runnable {
 
 			for (Class<?> clazz : scanner.getClasses()) {
 				log.info("Found service " + clazz.getName());
+				LovegoodService annotation = clazz.getAnnotation(LovegoodService.class);
+				if (annotation.debug() && !context.debug()) {
+					log.info(String.format("Ignoring service %s, because debugging is disabled", clazz.getName()));
+					continue;
+				}
+
 				Object o = clazz.newInstance();
 				services.add(o);
 				injectionProfile.apply(o);

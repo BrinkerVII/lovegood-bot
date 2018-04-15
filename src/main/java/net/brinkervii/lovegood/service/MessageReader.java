@@ -5,7 +5,7 @@ import net.brinkervii.lovegood.core.LovegoodContext;
 import net.brinkervii.lovegood.jda.LovegoodListener;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
-@LovegoodService
+@LovegoodService(debug = true)
 public class MessageReader {
 	private LovegoodContext context;
 
