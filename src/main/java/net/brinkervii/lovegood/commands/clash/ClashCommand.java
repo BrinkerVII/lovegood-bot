@@ -31,7 +31,7 @@ public class ClashCommand implements RunnableCommand {
 		}
 
 		if (sourceMember.getUser().getIdLong() == targetMember.getUser().getIdLong()) {
-			String failMsg = String.format("%s, that's not how it works, thats not how any of this works. You can't clash with yourself :neutral_face:", sourceMember.getAsMention());
+			String failMsg = String.format("%s, that's not how it works, that's not how any of this works. You can't clash with yourself :neutral_face:", sourceMember.getAsMention());
 			event.getChannel().sendMessage(failMsg).complete();
 			return;
 		}
