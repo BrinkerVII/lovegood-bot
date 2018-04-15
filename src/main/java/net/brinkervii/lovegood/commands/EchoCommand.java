@@ -5,7 +5,7 @@ import net.brinkervii.lovegood.service.commands.ParsedCommandInput;
 import net.brinkervii.lovegood.service.commands.RunnableCommand;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
-@LovegoodCommand(name = "echo")
+@LovegoodCommand(name = "echo", debug = true)
 public class EchoCommand implements RunnableCommand {
 	MessageReceivedEvent event;
 	ParsedCommandInput input;
