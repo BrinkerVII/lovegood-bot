@@ -30,6 +30,12 @@ public class ClashCommand implements RunnableCommand {
 			return;
 		}
 
+		if (sourceMember.getUser().getIdLong() == targetMember.getUser().getIdLong()) {
+			String failMsg = String.format("%s, that's not how it works, thats not how any of this works. You can't clash with yourself :neutral_face:", sourceMember.getAsMention());
+			event.getChannel().sendMessage(failMsg).complete();
+			return;
+		}
+
 		ActiveClash clash = new ActiveClash(event.getChannel(), sourceMember, targetMember);
 		ClashUpdater updater = context.getClashUpdater();
 		if (updater != null) {
