@@ -12,8 +12,9 @@ import net.brinkervii.lovegood.jda.LovegoodListener;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
 import java.lang.annotation.Annotation;
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Set;
+import java.util.List;
 
 @LovegoodService
 @Slf4j
@@ -83,7 +84,20 @@ public class CommandInterpreter {
 		t.start();
 	}
 
-	public Set<String> getCommandList() {
-		return commands.keySet();
+	public List<String> getCommandList() {
+		List<String> commandsList = new ArrayList<>();
+
+		commands.forEach((name, clazz) -> {
+			LovegoodCommand annotation = clazz.getAnnotation(LovegoodCommand.class);
+			if (annotation != null) {
+				if (annotation.debug() && !context.debug()) {
+
+				} else {
+					commandsList.add(name);
+				}
+			}
+		});
+
+		return commandsList;
 	}
 }
