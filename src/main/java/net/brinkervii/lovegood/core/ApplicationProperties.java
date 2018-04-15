@@ -1,10 +1,12 @@
 package net.brinkervii.lovegood.core;
 
+import lombok.extern.slf4j.Slf4j;
+
 import java.io.*;
 import java.util.HashMap;
 import java.util.Properties;
 
-
+@Slf4j
 public class ApplicationProperties {
 	private final static String PROFILE_KEY = "lovegood.profile";
 	private HashMap<String, String> properties = new HashMap<>();
@@ -44,6 +46,10 @@ public class ApplicationProperties {
 
 		// Re-apply system properties, because these always have priority
 		systemProperties.forEach((key, value) -> properties.put(String.valueOf(key), String.valueOf(value)));
+
+		if (properties.containsKey("default")) {
+			log.warn("A set of properties did not load correctly, check if all properties files are in place and correctly configured");
+		}
 	}
 
 	public String get(String key) {
