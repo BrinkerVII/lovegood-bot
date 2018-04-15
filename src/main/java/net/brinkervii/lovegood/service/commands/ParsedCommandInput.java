@@ -55,7 +55,7 @@ public class ParsedCommandInput {
 
 	public String command() {
 		parse();
-		return components.get(0);
+		return components.get(0).toLowerCase();
 	}
 
 	public String[] arguments() {
@@ -70,5 +70,10 @@ public class ParsedCommandInput {
 		}
 
 		return args;
+	}
+
+	public int getInt(int i) {
+		if (arguments()[i] == null) return 0;
+		return Integer.parseInt(arguments()[i]);
 	}
 }

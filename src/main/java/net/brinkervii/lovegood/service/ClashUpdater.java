@@ -4,6 +4,7 @@ import net.brinkervii.lovegood.annotation.LovegoodService;
 import net.brinkervii.lovegood.commands.clash.ActiveClash;
 import net.brinkervii.lovegood.core.LovegoodContext;
 import net.brinkervii.lovegood.jda.LovegoodListener;
+import net.brinkervii.lovegood.util.ArrayListCleaner;
 import net.dv8tion.jda.core.entities.MessageReaction;
 import net.dv8tion.jda.core.events.message.react.MessageReactionAddEvent;
 import net.dv8tion.jda.core.events.message.react.MessageReactionRemoveEvent;
@@ -29,6 +30,8 @@ public class ClashUpdater {
 				} else if (reactionEmote.getName().equals(BLUE_CIRCLE)) {
 					clash.changeRightVotes(direction);
 				}
+
+				removeConcludedClashes();
 			}
 
 			@Override
@@ -59,5 +62,13 @@ public class ClashUpdater {
 
 	public void add(ActiveClash clash) {
 		clashes.add(clash);
+	}
+
+	public boolean removeConcludedClashes() {
+		return new ArrayListCleaner<>(clashes, ActiveClash::concluded).clean();
+	}
+
+	public ArrayList<ActiveClash> getClashes() {
+		return clashes;
 	}
 }

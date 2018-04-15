@@ -28,7 +28,8 @@ public class CommandInterpreter {
 			scanner.scan(LovegoodConstants.PACKAGE);
 			for (Class<?> clazz : scanner.getClasses()) {
 				Annotation annotation = clazz.getAnnotation(LovegoodCommand.class);
-				String commandString = ((LovegoodCommand) annotation).name();
+				LovegoodCommand realAnnotation = (LovegoodCommand) annotation;
+				String commandString = realAnnotation.name().toLowerCase();
 				commands.put(commandString, (Class<RunnableCommand>) clazz);
 			}
 		} catch (NotAnAnnotationException e) {
@@ -58,7 +59,14 @@ public class CommandInterpreter {
 					if (commands.containsKey(input.command())) {
 						try {
 							cmdInjectionProfile.provide(input).lock();
-							RunnableCommand commandInstance = commands.get(input.command()).newInstance();
+							Class<RunnableCommand> runnableCommandClass = commands.get(input.command());
+							LovegoodCommand annotation = runnableCommandClass.getAnnotation(LovegoodCommand.class);
+							if (annotation.debug() && !context.debug()) {
+								log.warn(String.format("Cannot execute command %s, because debug mode is not enabled", input.command()));
+								return;
+							}
+
+							RunnableCommand commandInstance = runnableCommandClass.newInstance();
 							cmdInjectionProfile.apply(commandInstance);
 							runCommand(commandInstance);
 						} catch (InstantiationException | IllegalAccessException e) {
