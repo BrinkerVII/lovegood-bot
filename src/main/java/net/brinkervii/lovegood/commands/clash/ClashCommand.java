@@ -4,6 +4,7 @@ import net.brinkervii.lovegood.annotation.LovegoodCommand;
 import net.brinkervii.lovegood.core.LovegoodContext;
 import net.brinkervii.lovegood.service.ClashUpdater;
 import net.brinkervii.lovegood.service.commands.RunnableCommand;
+import net.brinkervii.lovegood.util.MessageUtil;
 import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
@@ -25,6 +26,12 @@ public class ClashCommand implements RunnableCommand {
 		}
 
 		if (targetMember == null) {
+			if (MessageUtil.containsAllMention(event.getMessage().getContentRaw())) {
+				String failMsg = String.format("%s, even you do not have that kind of power.", sourceMember.getAsMention());
+				event.getChannel().sendMessage(failMsg).complete();
+				return;
+			}
+
 			String failMsg = String.format("%s You didn't tell me who to clash with :frowning:", sourceMember.getAsMention());
 			event.getChannel().sendMessage(failMsg).complete();
 			return;
