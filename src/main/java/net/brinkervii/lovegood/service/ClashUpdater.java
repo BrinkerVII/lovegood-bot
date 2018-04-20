@@ -1,7 +1,9 @@
 package net.brinkervii.lovegood.service;
 
+import lombok.extern.slf4j.Slf4j;
 import net.brinkervii.lovegood.annotation.LovegoodService;
 import net.brinkervii.lovegood.commands.clash.ActiveClash;
+import net.brinkervii.lovegood.commands.util.StacktraceUtil;
 import net.brinkervii.lovegood.core.LovegoodContext;
 import net.brinkervii.lovegood.jda.LovegoodListener;
 import net.brinkervii.lovegood.util.ArrayListCleaner;
@@ -15,6 +17,7 @@ import static net.brinkervii.lovegood.commands.clash.ClashConstants.BLUE_CIRCLE;
 import static net.brinkervii.lovegood.commands.clash.ClashConstants.RED_CIRCLE;
 
 @LovegoodService
+@Slf4j
 public class ClashUpdater {
 	LovegoodContext context;
 	private ArrayList<ActiveClash> clashes = new ArrayList<>();
@@ -24,14 +27,18 @@ public class ClashUpdater {
 
 		context.getJdaManager().addListener(new LovegoodListener() {
 			void onReaction(ActiveClash clash, MessageReaction reaction, int direction) {
-				MessageReaction.ReactionEmote reactionEmote = reaction.getReactionEmote();
-				if (reactionEmote.getName().equals(RED_CIRCLE)) {
-					clash.changeLeftVotes(direction);
-				} else if (reactionEmote.getName().equals(BLUE_CIRCLE)) {
-					clash.changeRightVotes(direction);
-				}
+				try {
+					MessageReaction.ReactionEmote reactionEmote = reaction.getReactionEmote();
+					if (reactionEmote.getName().equals(RED_CIRCLE)) {
+						clash.changeLeftVotes(direction);
+					} else if (reactionEmote.getName().equals(BLUE_CIRCLE)) {
+						clash.changeRightVotes(direction);
+					}
 
-				removeConcludedClashes();
+					removeConcludedClashes();
+				} catch (Exception e) {
+					log.error("Failed to update a clash:\n\n" + StacktraceUtil.concat(e));
+				}
 			}
 
 			@Override
