@@ -7,7 +7,8 @@ public enum ClashFace {
 	SMILE(":smile:"),
 	SCREAM(":scream:"),
 	OPEN_MOUTH(":open_mouth:"),
-	SKULL(":skull:");
+	SKULL(":skull:"),
+	NEUTRAL_FACE(":neutral_face:");
 
 	private final String shortcode;
 

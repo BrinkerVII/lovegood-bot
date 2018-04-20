@@ -1,9 +1,13 @@
-package net.brinkervii.lovegood.core;
+package net.brinkervii.lovegood.core.beans;
 
 import lombok.extern.slf4j.Slf4j;
 import net.brinkervii.lovegood.annotation.AnnotationScanner;
 import net.brinkervii.lovegood.annotation.Bean;
 import net.brinkervii.lovegood.annotation.LovegoodService;
+import net.brinkervii.lovegood.core.InjectionProfile;
+import net.brinkervii.lovegood.core.LovegoodConstants;
+import net.brinkervii.lovegood.core.LovegoodContext;
+import net.brinkervii.lovegood.core.LovegoodContextHolder;
 import net.brinkervii.lovegood.exception.NotAnAnnotationException;
 
 import java.lang.reflect.InvocationTargetException;

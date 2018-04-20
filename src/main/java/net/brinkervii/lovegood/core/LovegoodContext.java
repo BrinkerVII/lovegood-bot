@@ -5,6 +5,7 @@ import net.brinkervii.lovegood.jda.JDAManager;
 import net.brinkervii.lovegood.service.ClashUpdater;
 import net.dv8tion.jda.core.JDA;
 import org.hibernate.SessionFactory;
+import org.quartz.Scheduler;
 
 import javax.security.auth.login.LoginException;
 import java.text.SimpleDateFormat;
@@ -19,12 +20,14 @@ public class LovegoodContext {
 	private Date startDate = new Date();
 	private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	private SessionFactory sessionFactory;
+	private Scheduler scheduler;
 
 	LovegoodContext() {
 		log.info(String.format("Debug mode: %s", String.valueOf(debug())));
 
 		this.jdaManager = new JDAManager();
 		try {
+			log.info("Logging in....");
 			jdaManager.build(properties.get("lovegood.token"));
 		} catch (LoginException | InterruptedException e) {
 			e.printStackTrace();
@@ -73,5 +76,13 @@ public class LovegoodContext {
 
 	public void setHibernateSessionFactory(SessionFactory sessionFactory) {
 		this.sessionFactory = sessionFactory;
+	}
+
+	public void setScheduler(Scheduler scheduler) {
+		this.scheduler = scheduler;
+	}
+
+	public Scheduler getScheduler() {
+		return scheduler;
 	}
 }

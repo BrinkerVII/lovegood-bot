@@ -24,6 +24,7 @@ public class ActiveClash {
 	private ClashFace leftFace = ClashFace.SMILE;
 	private ClashFace rightFace = ClashFace.SMILE;
 	private Member winner;
+	private boolean changed = false;
 
 	public ActiveClash(MessageChannel channel, Member sourceMember, Member targetMember) {
 		this.channel = channel;
@@ -38,6 +39,8 @@ public class ActiveClash {
 				.set(1.2f, ClashFace.OPEN_MOUTH)
 				.set(1.4f, ClashFace.SMILEY)
 				.set(2f, ClashFace.GRINNING);
+
+		changed = true;
 	}
 
 	private String makeClashString(int left, int right) {
@@ -51,16 +54,28 @@ public class ActiveClash {
 			rstring.append("=");
 		}
 
-		return CLASH_TEMPLATE
+		String clashString = CLASH_TEMPLATE
 				.replace("$0", lstring.toString())
 				.replace("$1", rstring.toString())
 				.replace("#0", leftFace.getShortcode())
-				.replace("#1", rightFace.getShortcode())
-				;
+				.replace("#1", rightFace.getShortcode());
+
+		if (expired()) {
+			clashString = clashString
+					.replace("=", " ")
+					.replace(">", " ")
+					.replace("<", " ")
+					.replace(":atom:", ":dash:")
+					.replace(":sparkles:", " ");
+		}
+
+		return clashString;
 	}
 
 
 	public void step() {
+		if (!changed) return;
+
 		final int DLEN = MAX_LENGTH * 2;
 
 		int balance = leftVotes - rightVotes;
@@ -73,20 +88,35 @@ public class ActiveClash {
 			winner = sourceMember;
 		}
 
-		double leftProgress = (double) leftlen / (double) MAX_LENGTH;
-		leftFace = faceScale.get(leftProgress);
-		double rightProgress = (double) rightlen / (double) MAX_LENGTH;
-		rightFace = faceScale.get(rightProgress);
-
-		String descriptorString = String.format("CLASH! %s vs %s", sourceMember.getAsMention(), targetMember.getAsMention());
-		if (winner != null) {
-			descriptorString += " (The winner is " + winner.getEffectiveName() + ")\n";
+		if (expired()) {
+			leftFace = ClashFace.NEUTRAL_FACE;
+			rightFace = ClashFace.NEUTRAL_FACE;
 		} else {
-			descriptorString += " (No winner)\n";
+			double leftProgress = (double) leftlen / (double) MAX_LENGTH;
+			leftFace = faceScale.get(leftProgress);
+			double rightProgress = (double) rightlen / (double) MAX_LENGTH;
+			rightFace = faceScale.get(rightProgress);
+		}
+
+		String descriptorString = String.format("CLASH! :red_circle:%s vs %s:large_blue_circle:", sourceMember.getAsMention(), targetMember.getAsMention());
+
+		if (expired()) {
+			descriptorString += " (Ran out of magic)\n";
+		} else {
+			if (winner == null) {
+				descriptorString += " (No winner)\n";
+
+			} else {
+				descriptorString += " (The winner is " + winner.getEffectiveName() + ")\n";
+			}
 		}
 
 		String clashLine = makeClashString(leftlen, rightlen);
 		String messageString = descriptorString + clashLine;
+
+		if (!concluded()) {
+			messageString += "\n\nVote on who should win by clicking the reaction with their coloured circle";
+		}
 
 		if (message == null) {
 			message = channel.sendMessage(messageString).complete();
@@ -103,11 +133,13 @@ public class ActiveClash {
 
 	public void changeLeftVotes(int count) {
 		leftVotes += count;
+		changed = true;
 		step();
 	}
 
 	public void changeRightVotes(int count) {
 		rightVotes += count;
+		changed = true;
 		step();
 	}
 

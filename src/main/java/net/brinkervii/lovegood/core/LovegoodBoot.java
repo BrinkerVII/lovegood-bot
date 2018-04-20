@@ -6,12 +6,16 @@ import net.brinkervii.lovegood.annotation.Configuration;
 import net.brinkervii.lovegood.exception.InitializationException;
 import net.brinkervii.lovegood.exception.NotAnAnnotationException;
 import net.brinkervii.lovegood.util.HibernateUtil;
+import org.quartz.Scheduler;
+import org.quartz.SchedulerException;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 
 public class LovegoodBoot {
 	public static void main(String[] arguments) {
+		final LovegoodContext context = LovegoodContextHolder.getInstance().getContext();
+
 		ArrayList<LovegoodRunner> runners = new ArrayList<>();
 		try {
 			for (Class<?> clazz : Arrays.asList(Configuration.class, Bean.class)) {
@@ -32,6 +36,14 @@ public class LovegoodBoot {
 				runner.stop();
 			}
 
+			final Scheduler scheduler = context.getScheduler();
+			if (scheduler != null) {
+				try {
+					scheduler.shutdown();
+				} catch (SchedulerException e) {
+					e.printStackTrace();
+				}
+			}
 			HibernateUtil.shutdown();
 			System.out.println("Finished running shutdown hook");
 		}));
