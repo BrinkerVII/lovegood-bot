@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import net.brinkervii.lovegood.annotation.AnnotationScanner;
 import net.brinkervii.lovegood.annotation.LovegoodCommand;
 import net.brinkervii.lovegood.annotation.LovegoodService;
+import net.brinkervii.lovegood.commands.util.StacktraceUtil;
 import net.brinkervii.lovegood.core.InjectionProfile;
 import net.brinkervii.lovegood.core.LovegoodConstants;
 import net.brinkervii.lovegood.core.LovegoodContext;
@@ -80,7 +81,13 @@ public class CommandInterpreter {
 	}
 
 	private void runCommand(final RunnableCommand runnable) {
-		Thread t = new Thread(runnable::run);
+		Thread t = new Thread(() -> {
+			try {
+				runnable.run();
+			} catch (Exception e) {
+				log.error("Failed to execute a command\n\n" + StacktraceUtil.concat(e));
+			}
+		});
 		t.start();
 	}
 
