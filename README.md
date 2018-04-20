@@ -15,3 +15,4 @@ issues.
 - Player bank / wallet thing (WIP)
 - Command bundles
 - Role Based Access Control
+- Reporting via personal message
