@@ -1,6 +1,8 @@
 package net.brinkervii.lovegood.commands.clash;
 
+import lombok.extern.slf4j.Slf4j;
 import net.brinkervii.lovegood.annotation.LovegoodCommand;
+import net.brinkervii.lovegood.commands.util.StacktraceUtil;
 import net.brinkervii.lovegood.core.LovegoodContext;
 import net.brinkervii.lovegood.service.ClashUpdater;
 import net.brinkervii.lovegood.service.commands.RunnableCommand;
@@ -10,7 +12,10 @@ import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
 import java.util.List;
 
+import static net.brinkervii.lovegood.commands.clash.ClashConstants.CLASH_LIMIT;
+
 @LovegoodCommand(name = "clash")
+@Slf4j
 public class ClashCommand implements RunnableCommand {
 	MessageReceivedEvent event;
 	LovegoodContext context;
@@ -46,6 +51,16 @@ public class ClashCommand implements RunnableCommand {
 		ActiveClash clash = new ActiveClash(event.getChannel(), sourceMember, targetMember);
 		ClashUpdater updater = context.getClashUpdater();
 		if (updater != null) {
+			if (updater.numberOfClashes() >= CLASH_LIMIT) {
+				try {
+					event.getMessage().delete().complete();
+				} catch (Exception e) {
+					log.warn("Could not delete clash message that went over CLASH_LIMIT\n\n" + StacktraceUtil.concat(e));
+				}
+
+				return;
+			}
+
 			updater.add(clash);
 		}
 

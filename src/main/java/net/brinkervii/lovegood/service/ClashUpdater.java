@@ -71,4 +71,8 @@ public class ClashUpdater {
 	public ArrayList<ActiveClash> getClashes() {
 		return clashes;
 	}
+
+	public int numberOfClashes() {
+		return clashes.size();
+	}
 }
