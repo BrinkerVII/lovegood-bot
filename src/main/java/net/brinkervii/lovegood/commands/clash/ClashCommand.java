@@ -64,6 +64,7 @@ public class ClashCommand implements RunnableCommand {
 			updater.add(clash);
 		}
 
-		clash.step();
+		clash.updateMessageString();
+		clash.send();
 	}
 }

@@ -26,6 +26,8 @@ public class ActiveClash {
 	private Member winner;
 	private boolean changed = false;
 
+	private String currentMessagestring = null;
+
 	public ActiveClash(MessageChannel channel, Member sourceMember, Member targetMember) {
 		this.channel = channel;
 		this.sourceMember = sourceMember;
@@ -73,9 +75,7 @@ public class ActiveClash {
 	}
 
 
-	public void step() {
-		if (!changed) return;
-
+	public void updateMessageString() {
 		final int DLEN = MAX_LENGTH * 2;
 
 		int balance = leftVotes - rightVotes;
@@ -118,13 +118,19 @@ public class ActiveClash {
 			messageString += "\n\nVote on who should win by clicking the reaction with their coloured circle";
 		}
 
+		this.currentMessagestring = messageString;
+	}
+
+	public void send() {
 		if (message == null) {
-			message = channel.sendMessage(messageString).complete();
+			message = channel.sendMessage(currentMessagestring).complete();
 			message.addReaction(RED_CIRCLE).complete();
 			message.addReaction(BLUE_CIRCLE).complete();
 		} else {
-			message.editMessage(messageString).complete();
+			message.editMessage(currentMessagestring).complete();
 		}
+
+		this.changed = false;
 	}
 
 	public long getMessageIdLong() {
@@ -134,13 +140,13 @@ public class ActiveClash {
 	public void changeLeftVotes(int count) {
 		leftVotes += count;
 		changed = true;
-		step();
+		updateMessageString();
 	}
 
 	public void changeRightVotes(int count) {
 		rightVotes += count;
 		changed = true;
-		step();
+		updateMessageString();
 	}
 
 	public boolean concluded() {
@@ -149,5 +155,9 @@ public class ActiveClash {
 
 	public boolean expired() {
 		return System.currentTimeMillis() - start >= LIFETIME;
+	}
+
+	public boolean isChanged() {
+		return changed;
 	}
 }

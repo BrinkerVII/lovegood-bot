@@ -17,7 +17,10 @@ public class ClashInvalidatorJob implements Job {
 		final ClashUpdater clashUpdater = context.getClashUpdater();
 
 		for (ActiveClash clash : clashUpdater.getClashes()) {
-			clash.step();
+			clash.updateMessageString();
+			if(clash.concluded()) {
+				clash.send();
+			}
 		}
 		clashUpdater.removeConcludedClashes();
 	}
@@ -35,7 +38,7 @@ public class ClashInvalidatorJob implements Job {
 				.startNow()
 				.withSchedule(
 						simpleSchedule()
-								.withIntervalInMinutes(1)
+								.withIntervalInSeconds(10)
 								.repeatForever()
 				)
 				.build();

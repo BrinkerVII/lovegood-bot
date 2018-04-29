@@ -15,12 +15,15 @@ import java.util.ArrayList;
 
 import static net.brinkervii.lovegood.commands.clash.ClashConstants.BLUE_CIRCLE;
 import static net.brinkervii.lovegood.commands.clash.ClashConstants.RED_CIRCLE;
+import static net.brinkervii.lovegood.core.LovegoodConstants.CLASH_UPDATE_INTERVAL;
+import static net.brinkervii.lovegood.core.LovegoodConstants.CLASH_WAITBEFORE_UPDATE;
 
 @LovegoodService
 @Slf4j
 public class ClashUpdater {
 	LovegoodContext context;
 	private ArrayList<ActiveClash> clashes = new ArrayList<>();
+	private Thread ticker = null;
 
 	public void init() {
 		context.setClashUpdater(this);
@@ -69,6 +72,34 @@ public class ClashUpdater {
 
 	public void add(ActiveClash clash) {
 		clashes.add(clash);
+
+		if (this.ticker != null) return;
+		this.ticker = new Thread(() -> {
+			try {
+				Thread.sleep(CLASH_WAITBEFORE_UPDATE);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+
+			while (clashes.size() > 0) {
+				for (ActiveClash activeClash : clashes) {
+					if (activeClash.isChanged()) {
+						activeClash.updateMessageString();
+						activeClash.send();
+					}
+				}
+
+				try {
+					Thread.sleep(CLASH_UPDATE_INTERVAL);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			}
+
+			ticker = null;
+		});
+
+		this.ticker.start();
 	}
 
 	public boolean removeConcludedClashes() {
