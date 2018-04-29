@@ -48,7 +48,7 @@ public class ClashCommand implements RunnableCommand {
 			return;
 		}
 
-		ActiveClash clash = new ActiveClash(event.getChannel(), sourceMember, targetMember);
+		ActiveClash clash = new ActiveClash(context, event.getChannel(), sourceMember, targetMember);
 		ClashUpdater updater = context.getClashUpdater();
 		if (updater != null) {
 			if (updater.numberOfClashes() >= CLASH_LIMIT) {
