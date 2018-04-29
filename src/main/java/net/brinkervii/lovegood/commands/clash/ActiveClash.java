@@ -1,6 +1,7 @@
 package net.brinkervii.lovegood.commands.clash;
 
 import lombok.extern.slf4j.Slf4j;
+import net.brinkervii.lovegood.core.LovegoodContext;
 import net.brinkervii.lovegood.util.MoreMath;
 import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.Message;
@@ -17,6 +18,8 @@ public class ActiveClash {
 	private final Member targetMember;
 	private final ClashFaceScale faceScale;
 	private final long start = System.currentTimeMillis();
+	private final String PROP_LIFETIME = "lovegood.clash.lifetime";
+	private long lifetime;
 
 	private Message message = null;
 	private int leftVotes = 0;
@@ -28,10 +31,24 @@ public class ActiveClash {
 
 	private String currentMessagestring = null;
 
-	public ActiveClash(MessageChannel channel, Member sourceMember, Member targetMember) {
+	public ActiveClash(LovegoodContext context, MessageChannel channel, Member sourceMember, Member targetMember) {
 		this.channel = channel;
 		this.sourceMember = sourceMember;
 		this.targetMember = targetMember;
+
+		this.lifetime = LIFETIME;
+		if (context.getProperties().containsKey(PROP_LIFETIME)) {
+			try {
+				this.lifetime = Long.parseLong(context.getProperties().get(PROP_LIFETIME));
+			} catch (Exception e) {
+				this.lifetime = -1L;
+			}
+
+			if (this.lifetime <= 0) {
+				this.lifetime = LIFETIME;
+				log.warn("Lifetime variable from application settings could not be parsed properly");
+			}
+		}
 
 		this.faceScale = new ClashFaceScale()
 				.set(0f, ClashFace.SKULL)
@@ -154,7 +171,7 @@ public class ActiveClash {
 	}
 
 	public boolean expired() {
-		return System.currentTimeMillis() - start >= LIFETIME;
+		return System.currentTimeMillis() - start >= this.lifetime;
 	}
 
 	public boolean isChanged() {
