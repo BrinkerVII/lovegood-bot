@@ -91,7 +91,7 @@ public class ActiveClash {
 		return clashString;
 	}
 
-	private void updateMessageStringSynchronised() {
+	public synchronized void updateMessageString() {
 		final int DLEN = MAX_LENGTH * 2;
 
 		int balance = leftVotes - rightVotes;
@@ -137,13 +137,6 @@ public class ActiveClash {
 		this.currentMessagestring = messageString;
 	}
 
-
-	public void updateMessageString() {
-		synchronized (this) {
-			updateMessageStringSynchronised();
-		}
-	}
-
 	public void send() {
 		if (message == null) {
 			message = channel.sendMessage(currentMessagestring).complete();
@@ -162,20 +155,16 @@ public class ActiveClash {
 		return message.getIdLong();
 	}
 
-	public void changeLeftVotes(int count) {
-		synchronized (this) {
-			leftVotes += count;
-			changed = true;
-			updateMessageString();
-		}
+	public synchronized void changeLeftVotes(int count) {
+		leftVotes += count;
+		changed = true;
+		updateMessageString();
 	}
 
-	public void changeRightVotes(int count) {
-		synchronized (this) {
-			rightVotes += count;
-			changed = true;
-			updateMessageString();
-		}
+	public synchronized void changeRightVotes(int count) {
+		rightVotes += count;
+		changed = true;
+		updateMessageString();
 	}
 
 	public boolean concluded() {
