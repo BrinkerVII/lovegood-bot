@@ -9,9 +9,11 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.function.BiConsumer;
 
+import static net.brinkervii.lovegood.core.LovegoodConstants.PROP_APPLICATION_PROFILE;
+
 @Slf4j
 public class ApplicationProperties {
-	private final static String PROFILE_KEY = "lovegood.profile";
+
 	private HashMap<String, String> properties = new HashMap<>();
 	private String profile = "prod";
 
@@ -38,8 +40,8 @@ public class ApplicationProperties {
 		Properties systemProperties = System.getProperties();
 		systemProperties.forEach((key, value) -> properties.put(String.valueOf(key), String.valueOf(value)));
 
-		if (properties.containsKey(PROFILE_KEY)) {
-			profile = properties.get(PROFILE_KEY);
+		if (properties.containsKey(PROP_APPLICATION_PROFILE)) {
+			profile = properties.get(PROP_APPLICATION_PROFILE);
 		}
 
 		// Load profile specific properties

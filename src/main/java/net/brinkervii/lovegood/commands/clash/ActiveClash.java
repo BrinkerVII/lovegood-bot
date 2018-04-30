@@ -8,6 +8,7 @@ import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.MessageChannel;
 
 import static net.brinkervii.lovegood.commands.clash.ClashConstants.*;
+import static net.brinkervii.lovegood.core.LovegoodConstants.PROP_CLASH_LIFETIME;
 
 @Slf4j
 public class ActiveClash {
@@ -18,7 +19,6 @@ public class ActiveClash {
 	private final Member targetMember;
 	private final ClashFaceScale faceScale;
 	private final long start = System.currentTimeMillis();
-	private final String PROP_LIFETIME = "lovegood.clash.lifetime";
 	private long lifetime;
 
 	private Message message = null;
@@ -37,9 +37,9 @@ public class ActiveClash {
 		this.targetMember = targetMember;
 
 		this.lifetime = LIFETIME;
-		if (context.getProperties().containsKey(PROP_LIFETIME)) {
+		if (context.getProperties().containsKey(PROP_CLASH_LIFETIME)) {
 			try {
-				this.lifetime = Long.parseLong(context.getProperties().get(PROP_LIFETIME));
+				this.lifetime = Long.parseLong(context.getProperties().get(PROP_CLASH_LIFETIME));
 			} catch (Exception e) {
 				this.lifetime = -1L;
 			}

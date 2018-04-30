@@ -15,15 +15,9 @@ import javax.persistence.Entity;
 import java.util.HashMap;
 import java.util.Map;
 
-import static net.brinkervii.lovegood.core.LovegoodConstants.PACKAGE;
+import static net.brinkervii.lovegood.core.LovegoodConstants.*;
 
 public class HibernateUtil {
-	private static final String DRIVER_CLASS = "lovegood.db.connection.driver_class";
-	private static final String CONNECTION_URL = "lovegood.db.connection.url";
-	private static final String DIALECT = "lovegood.db.dialect";
-	private static final String HBM2DDL_AUTO = "lovegood.db.hbm2ddl_auto";
-	private static final String SHOW_SQL = "lovegood.db.show_sql";
-
 	private static SessionFactory sessionFactory;
 	private static StandardServiceRegistry registry;
 
@@ -37,11 +31,11 @@ public class HibernateUtil {
 			final ApplicationProperties properties = LovegoodContextHolder.getInstance().getContext().getProperties();
 
 			Map<String, Object> settings = new HashMap<>();
-			settings.put(Environment.DRIVER, properties.get(DRIVER_CLASS));
-			settings.put(Environment.URL, properties.get(CONNECTION_URL));
-			settings.put(Environment.DIALECT, properties.get(DIALECT));
-			settings.put(Environment.HBM2DDL_AUTO, properties.get(HBM2DDL_AUTO));
-			settings.put(Environment.SHOW_SQL, properties.get(SHOW_SQL));
+			settings.put(Environment.DRIVER, properties.get(PROP_DB_DRIVER_CLASS));
+			settings.put(Environment.URL, properties.get(PROP_DB_CONNECTION_URL));
+			settings.put(Environment.DIALECT, properties.get(PROP_DB_DIALECT));
+			settings.put(Environment.HBM2DDL_AUTO, properties.get(PROP_DB_HBM2DDL_AUTO));
+			settings.put(Environment.SHOW_SQL, properties.get(PROP_DB_SHOW_SQL));
 
 			// Maximum waiting time for a connection from the pool
 			settings.put("hibernate.hikari.connectionTimeout", "20000");

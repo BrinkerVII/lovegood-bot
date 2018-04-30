@@ -11,6 +11,9 @@ import javax.security.auth.login.LoginException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import static net.brinkervii.lovegood.core.LovegoodConstants.PROP_APPLICATION_DEBUG;
+import static net.brinkervii.lovegood.core.LovegoodConstants.PROP_APPLICATION_TOKEN;
+
 @Slf4j
 public class LovegoodContext {
 	private final JDAManager jdaManager;
@@ -28,7 +31,7 @@ public class LovegoodContext {
 		this.jdaManager = new JDAManager();
 		try {
 			log.info("Logging in....");
-			jdaManager.build(properties.get("lovegood.token"));
+			jdaManager.build(properties.get(PROP_APPLICATION_TOKEN));
 		} catch (LoginException | InterruptedException e) {
 			e.printStackTrace();
 		}
@@ -55,8 +58,8 @@ public class LovegoodContext {
 	}
 
 	public boolean debug() {
-		if (properties.containsKey("lovegood.debug")) {
-			return Boolean.parseBoolean(properties.get("lovegood.debug"));
+		if (properties.containsKey(PROP_APPLICATION_DEBUG)) {
+			return Boolean.parseBoolean(properties.get(PROP_APPLICATION_DEBUG));
 		}
 
 		return false;
