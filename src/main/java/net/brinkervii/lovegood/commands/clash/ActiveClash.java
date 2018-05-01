@@ -137,7 +137,9 @@ public class ActiveClash {
 		this.currentMessagestring = messageString;
 	}
 
-	public void send() {
+	public synchronized void send() {
+		if (!changed && message != null) return;
+
 		if (message == null) {
 			message = channel.sendMessage(currentMessagestring).complete();
 			message.addReaction(RED_CIRCLE).complete();
@@ -146,9 +148,7 @@ public class ActiveClash {
 			message.editMessage(currentMessagestring).complete();
 		}
 
-		synchronized (this) {
-			this.changed = false;
-		}
+		this.changed = false;
 	}
 
 	public long getMessageIdLong() {

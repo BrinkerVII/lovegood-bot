@@ -37,6 +37,7 @@ public class ClashUpdater {
 					} else if (reactionEmote.getName().equals(BLUE_CIRCLE)) {
 						clash.changeRightVotes(direction);
 					}
+					clash.send();
 
 					removeConcludedClashes();
 				} catch (Exception e) {
