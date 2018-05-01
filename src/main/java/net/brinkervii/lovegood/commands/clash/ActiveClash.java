@@ -100,8 +100,10 @@ public class ActiveClash {
 
 		if (leftlen <= 0) {
 			winner = targetMember;
+			this.changed = true;
 		} else if (rightlen <= 0) {
 			winner = sourceMember;
+			this.changed = true;
 		}
 
 		if (expired()) {
@@ -121,9 +123,9 @@ public class ActiveClash {
 		} else {
 			if (winner == null) {
 				descriptorString += " (No winner)\n";
-
 			} else {
 				descriptorString += " (The winner is " + winner.getEffectiveName() + ")\n";
+				log.info("Added winner to descriptor string (%s)", winner.getAsMention());
 			}
 		}
 
@@ -144,8 +146,10 @@ public class ActiveClash {
 			message = channel.sendMessage(currentMessagestring).complete();
 			message.addReaction(RED_CIRCLE).complete();
 			message.addReaction(BLUE_CIRCLE).complete();
+			log.info("Sent clash message with response, clash members are %s and %s", sourceMember.getAsMention(), targetMember.getAsMention());
 		} else {
 			message.editMessage(currentMessagestring).complete();
+			log.info("Edited clash message with response, clash members are %s and %s", sourceMember.getAsMention(), targetMember.getAsMention());
 		}
 
 		this.changed = false;
@@ -159,12 +163,14 @@ public class ActiveClash {
 		leftVotes += count;
 		changed = true;
 		updateMessageString();
+		log.info("Changed left votes to %d", leftVotes);
 	}
 
 	public synchronized void changeRightVotes(int count) {
 		rightVotes += count;
 		changed = true;
 		updateMessageString();
+		log.info("Changed right votes to %d", rightVotes);
 	}
 
 	public boolean concluded() {

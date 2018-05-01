@@ -25,7 +25,7 @@ public class ClashUpdater {
 	private ArrayList<ActiveClash> clashes = new ArrayList<>();
 	private Thread ticker = null;
 
-	public void init() {
+	public synchronized void init() {
 		context.setClashUpdater(this);
 
 		context.getJdaManager().addListener(new LovegoodListener() {
@@ -71,7 +71,7 @@ public class ClashUpdater {
 		return null;
 	}
 
-	public void add(ActiveClash clash) {
+	public synchronized void add(ActiveClash clash) {
 		clashes.add(clash);
 
 		if (this.ticker != null) return;
@@ -87,6 +87,7 @@ public class ClashUpdater {
 					if (activeClash.isChanged()) {
 						activeClash.updateMessageString();
 						activeClash.send();
+						log.info("Booped out a send for an updated clash");
 					}
 				}
 
@@ -104,7 +105,12 @@ public class ClashUpdater {
 	}
 
 	public boolean removeConcludedClashes() {
-		return new ArrayListCleaner<>(clashes, ActiveClash::concluded).clean();
+		boolean cleaned = new ArrayListCleaner<>(clashes, ActiveClash::concluded).clean();
+		if (cleaned) {
+			log.info("Removed some concluded clashes");
+		}
+
+		return cleaned;
 	}
 
 	public ArrayList<ActiveClash> getClashes() {

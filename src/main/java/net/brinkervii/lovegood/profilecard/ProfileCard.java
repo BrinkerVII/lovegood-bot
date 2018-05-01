@@ -32,8 +32,9 @@ public class ProfileCard {
 		this.event = event;
 		this.image = new BufferedImage(background.getWidth(), background.getHeight(), BufferedImage.TYPE_INT_ARGB);
 		drawBackground();
-		getAvatar();
-		drawAvatar();
+
+		// getAvatar();
+		// drawAvatar(); // This no workey yet
 	}
 
 	private void drawAvatar() {
