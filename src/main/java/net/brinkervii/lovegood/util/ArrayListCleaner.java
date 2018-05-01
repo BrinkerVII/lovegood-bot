@@ -11,7 +11,7 @@ public class ArrayListCleaner<T> {
 		this.condition = condition;
 	}
 
-	public boolean clean() {
+	public ArrayList<T> clean() {
 		ArrayList<T> rubbish = new ArrayList<>();
 		for (T thing : target) {
 			if (condition.shouldClean(thing)) {
@@ -19,14 +19,15 @@ public class ArrayListCleaner<T> {
 			}
 		}
 
-		boolean didRemoveSomething = rubbish.size() > 0;
-		boolean successfulRemoval = true;
+		ArrayList<T> removedClashes = new ArrayList<>();
 		for (T thing : rubbish) {
-			successfulRemoval &= target.remove(thing);
+			if (target.remove(thing)) {
+				target.remove(thing);
+			}
 		}
 
 		rubbish.clear();
-		return didRemoveSomething && successfulRemoval;
+		return removedClashes;
 	}
 
 	public interface CleanCondition<T> {

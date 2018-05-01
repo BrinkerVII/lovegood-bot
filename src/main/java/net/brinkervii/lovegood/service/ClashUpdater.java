@@ -105,8 +105,14 @@ public class ClashUpdater {
 	}
 
 	public boolean removeConcludedClashes() {
-		boolean cleaned = new ArrayListCleaner<>(clashes, ActiveClash::concluded).clean();
+		ArrayList<ActiveClash> removedClashes = new ArrayListCleaner<>(clashes, ActiveClash::concluded).clean();
+		boolean cleaned = removedClashes.size() > 0;
+
 		if (cleaned) {
+			for(ActiveClash clash : removedClashes) {
+				clash.updateMessageString();
+				clash.send(true);
+			}
 			log.info("Removed some concluded clashes");
 		}
 

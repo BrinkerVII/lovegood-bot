@@ -140,7 +140,11 @@ public class ActiveClash {
 	}
 
 	public synchronized void send() {
-		if (!changed && message != null) return;
+		send(false);
+	}
+
+	public synchronized void send(boolean forceSend) {
+		if (!forceSend && !changed && message != null) return;
 
 		if (message == null) {
 			message = channel.sendMessage(currentMessagestring).complete();
