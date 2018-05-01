@@ -22,7 +22,7 @@ public class ArrayListCleaner<T> {
 		ArrayList<T> removedClashes = new ArrayList<>();
 		for (T thing : rubbish) {
 			if (target.remove(thing)) {
-				target.remove(thing);
+				removedClashes.add(thing);
 			}
 		}
 
