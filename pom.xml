@@ -6,7 +6,7 @@
 
 	<groupId>net.brinkervii.lovegood</groupId>
 	<artifactId>lovegood-bot</artifactId>
-	<version>1.1.1-DEVELOP</version>
+	<version>1.1.2-DEVELOP</version>
 
 	<properties>
 		<slf4jVersion>1.7.25</slf4jVersion>
