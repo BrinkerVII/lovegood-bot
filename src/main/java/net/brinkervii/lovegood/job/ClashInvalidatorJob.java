@@ -16,6 +16,9 @@ public class ClashInvalidatorJob implements Job {
 		final LovegoodContext context = LovegoodContextHolder.getInstance().getContext();
 		final ClashUpdater clashUpdater = context.getClashUpdater();
 
+		// Clash updated may be null during initialization
+		if (clashUpdater == null) return;
+
 		for (ActiveClash clash : clashUpdater.getClashes()) {
 			clash.updateMessageString();
 			if(clash.concluded()) {
