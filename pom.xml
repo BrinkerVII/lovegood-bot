@@ -15,6 +15,14 @@
 
 	<dependencies>
 		<dependency>
+			<groupId>groupid</groupId>
+			<artifactId>artifiactId</artifactId>
+			<version>1.0</version>
+			<scope>system</scope>
+			<systemPath>${java.home}/lib/rt.jar</systemPath>
+		</dependency>
+
+		<dependency>
 			<groupId>net.dv8tion</groupId>
 			<artifactId>JDA</artifactId>
 			<version>3.6.0_355</version>
@@ -105,6 +113,10 @@
 					<source>8</source>
 					<target>8</target>
 					<encoding>UTF-8</encoding>
+					<compilerArgs>
+						<arg>-XDignore.symbol.file</arg>
+					</compilerArgs>
+					<fork>true</fork>
 				</configuration>
 			</plugin>
 
