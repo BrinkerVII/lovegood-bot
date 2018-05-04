@@ -8,6 +8,9 @@
 # GIMP files
 *.xcf
 
+# Current working directory
+cwd/
+
 # User-specific stuff:
 .idea/
 
