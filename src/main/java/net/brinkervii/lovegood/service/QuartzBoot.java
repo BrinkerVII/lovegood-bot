@@ -1,16 +1,14 @@
-package net.brinkervii.lovegood.core.beans;
+package net.brinkervii.lovegood.service;
 
-import net.brinkervii.lovegood.annotation.Bean;
-import net.brinkervii.lovegood.core.LovegoodContext;
-import net.brinkervii.lovegood.core.LovegoodContextHolder;
+import net.brinkervii.lovegood.annotation.LovegoodService;
+import net.brinkervii.lovegood.core.singletons.LovegoodContext;
+import net.brinkervii.lovegood.core.singletons.LovegoodContextHolder;
 import net.brinkervii.lovegood.job.ClashInvalidatorJob;
 import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
 import org.quartz.impl.StdSchedulerFactory;
 
-@Bean
-public class QuartzBoot implements Runnable {
-
+public class QuartzBoot implements LovegoodService {
 	@Override
 	public void run() {
 		final LovegoodContext context = LovegoodContextHolder.getInstance().getContext();

@@ -1,4 +1,4 @@
-package net.brinkervii.lovegood.commands.util;
+package net.brinkervii.lovegood.util;
 
 public class StacktraceUtil {
 	public static String concat(Exception e) {

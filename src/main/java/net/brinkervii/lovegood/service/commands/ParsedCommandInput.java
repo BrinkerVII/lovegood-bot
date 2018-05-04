@@ -1,6 +1,6 @@
 package net.brinkervii.lovegood.service.commands;
 
-import net.brinkervii.lovegood.core.LovegoodContext;
+import net.brinkervii.lovegood.core.singletons.LovegoodContext;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
 import java.util.ArrayList;

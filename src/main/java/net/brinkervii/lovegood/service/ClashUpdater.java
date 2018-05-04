@@ -2,9 +2,10 @@ package net.brinkervii.lovegood.service;
 
 import lombok.extern.slf4j.Slf4j;
 import net.brinkervii.lovegood.annotation.LovegoodService;
+import net.brinkervii.lovegood.annotation.LovegoodServiceParams;
 import net.brinkervii.lovegood.commands.clash.ActiveClash;
-import net.brinkervii.lovegood.commands.util.StacktraceUtil;
-import net.brinkervii.lovegood.core.LovegoodContext;
+import net.brinkervii.lovegood.util.StacktraceUtil;
+import net.brinkervii.lovegood.core.singletons.LovegoodContext;
 import net.brinkervii.lovegood.jda.LovegoodListener;
 import net.brinkervii.lovegood.util.ArrayListCleaner;
 import net.dv8tion.jda.core.entities.MessageReaction;
@@ -18,14 +19,15 @@ import static net.brinkervii.lovegood.commands.clash.ClashConstants.RED_CIRCLE;
 import static net.brinkervii.lovegood.core.LovegoodConstants.CLASH_UPDATE_INTERVAL;
 import static net.brinkervii.lovegood.core.LovegoodConstants.CLASH_WAITBEFORE_UPDATE;
 
-@LovegoodService
+@LovegoodServiceParams
 @Slf4j
-public class ClashUpdater {
+public class ClashUpdater implements LovegoodService {
 	LovegoodContext context;
 	private ArrayList<ActiveClash> clashes = new ArrayList<>();
 	private Thread ticker = null;
 
-	public synchronized void init() {
+	@Override
+	public synchronized void run() {
 		context.setClashUpdater(this);
 
 		context.getJdaManager().addListener(new LovegoodListener() {
@@ -109,7 +111,7 @@ public class ClashUpdater {
 		boolean cleaned = removedClashes.size() > 0;
 
 		if (cleaned) {
-			for(ActiveClash clash : removedClashes) {
+			for (ActiveClash clash : removedClashes) {
 				clash.updateMessageString();
 				clash.send(true);
 			}

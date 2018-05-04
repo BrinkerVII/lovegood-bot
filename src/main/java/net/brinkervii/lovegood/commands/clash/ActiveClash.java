@@ -1,7 +1,7 @@
 package net.brinkervii.lovegood.commands.clash;
 
 import lombok.extern.slf4j.Slf4j;
-import net.brinkervii.lovegood.core.LovegoodContext;
+import net.brinkervii.lovegood.core.singletons.LovegoodContext;
 import net.brinkervii.lovegood.util.MoreMath;
 import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.Message;

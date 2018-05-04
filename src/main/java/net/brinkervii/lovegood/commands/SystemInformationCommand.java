@@ -1,7 +1,7 @@
 package net.brinkervii.lovegood.commands;
 
 import net.brinkervii.lovegood.annotation.LovegoodCommand;
-import net.brinkervii.lovegood.core.LovegoodContext;
+import net.brinkervii.lovegood.core.singletons.LovegoodContext;
 import net.brinkervii.lovegood.service.commands.RunnableCommand;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.entities.MessageEmbed;

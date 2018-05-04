@@ -1,46 +1,37 @@
 package net.brinkervii.lovegood.service.commands;
 
 import lombok.extern.slf4j.Slf4j;
-import net.brinkervii.lovegood.annotation.AnnotationScanner;
 import net.brinkervii.lovegood.annotation.LovegoodCommand;
 import net.brinkervii.lovegood.annotation.LovegoodService;
-import net.brinkervii.lovegood.commands.util.StacktraceUtil;
+import net.brinkervii.lovegood.annotation.LovegoodServiceParams;
 import net.brinkervii.lovegood.core.InjectionProfile;
-import net.brinkervii.lovegood.core.LovegoodConstants;
-import net.brinkervii.lovegood.core.LovegoodContext;
-import net.brinkervii.lovegood.exception.NotAnAnnotationException;
+import net.brinkervii.lovegood.core.singletons.LovegoodContext;
 import net.brinkervii.lovegood.jda.LovegoodListener;
+import net.brinkervii.lovegood.util.StacktraceUtil;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
-import java.lang.annotation.Annotation;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-@LovegoodService
+@LovegoodServiceParams
 @Slf4j
-public class CommandInterpreter {
+public class CommandInterpreter implements LovegoodService {
 	HashMap<String, Class<RunnableCommand>> commands = new HashMap<>();
 	LovegoodContext context;
 	private InjectionProfile injectionProfile = new InjectionProfile();
 
 	public CommandInterpreter() {
-		try {
-			AnnotationScanner scanner = new AnnotationScanner(LovegoodCommand.class);
-			scanner.scan(LovegoodConstants.PACKAGE);
-			for (Class<?> clazz : scanner.getClasses()) {
-				Annotation annotation = clazz.getAnnotation(LovegoodCommand.class);
-				LovegoodCommand realAnnotation = (LovegoodCommand) annotation;
-				String commandString = realAnnotation.name().toLowerCase();
-				commands.put(commandString, (Class<RunnableCommand>) clazz);
-			}
-		} catch (NotAnAnnotationException e) {
-			e.printStackTrace();
-		}
 
 	}
 
-	public void init() {
+	public void run() {
+		CommandCollection commandCollection = new CommandCollection();
+		commandCollection.getCommandClasses(context.debug()).forEach(commandClass -> {
+			LovegoodCommand annotation = commandClass.getAnnotation(LovegoodCommand.class);
+			commands.put(annotation.name().toLowerCase(), (Class<RunnableCommand>) commandClass);
+		});
+
 		injectionProfile.provide(context, context.getJDA()).lock();
 		CommandInterpreter interpreter = this;
 
@@ -50,10 +41,10 @@ public class CommandInterpreter {
 				String content = event.getMessage().getContentRaw();
 				if (content.startsWith(context.getCommandPrefix())) {
 					InjectionProfile cmdInjectionProfile = new InjectionProfile()
-							.provide(context)
-							.provide(event)
-							.provide(context.getJDA())
-							.provide(interpreter);
+						.provide(context)
+						.provide(event)
+						.provide(context.getJDA())
+						.provide(interpreter);
 
 					ParsedCommandInput input = new ParsedCommandInput();
 					cmdInjectionProfile.apply(input);
@@ -61,12 +52,8 @@ public class CommandInterpreter {
 					if (commands.containsKey(input.command())) {
 						try {
 							cmdInjectionProfile.provide(input).lock();
+
 							Class<RunnableCommand> runnableCommandClass = commands.get(input.command());
-							LovegoodCommand annotation = runnableCommandClass.getAnnotation(LovegoodCommand.class);
-							if (annotation.debug() && !context.debug()) {
-								log.warn(String.format("Cannot execute command %s, because debug mode is not enabled", input.command()));
-								return;
-							}
 
 							RunnableCommand commandInstance = runnableCommandClass.newInstance();
 							cmdInjectionProfile.apply(commandInstance);

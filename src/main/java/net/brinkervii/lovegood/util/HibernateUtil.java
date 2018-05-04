@@ -1,9 +1,8 @@
 package net.brinkervii.lovegood.util;
 
-import net.brinkervii.lovegood.annotation.AnnotationScanner;
 import net.brinkervii.lovegood.core.ApplicationProperties;
-import net.brinkervii.lovegood.core.LovegoodContextHolder;
-import net.brinkervii.lovegood.exception.NotAnAnnotationException;
+import net.brinkervii.lovegood.core.collections.EntityCollection;
+import net.brinkervii.lovegood.core.singletons.LovegoodContextHolder;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.Metadata;
 import org.hibernate.boot.MetadataSources;
@@ -11,7 +10,6 @@ import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Environment;
 
-import javax.persistence.Entity;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -47,17 +45,10 @@ public class HibernateUtil {
 			settings.put("hibernate.hikari.idleTimeout", "300000");
 
 			registryBuilder.applySettings(settings);
-
 			registry = registryBuilder.build();
+
 			MetadataSources sources = new MetadataSources(registry);
-			AnnotationScanner scanner = null;
-			try {
-				scanner = new AnnotationScanner(Entity.class);
-				scanner.scan(PACKAGE);
-				scanner.getClasses().forEach(sources::addAnnotatedClass);
-			} catch (NotAnAnnotationException e) {
-				e.printStackTrace();
-			}
+			new EntityCollection().getEntities().forEach(sources::addAnnotatedClass);
 
 			Metadata metadata = sources.getMetadataBuilder().build();
 			sessionFactory = metadata.getSessionFactoryBuilder().build();

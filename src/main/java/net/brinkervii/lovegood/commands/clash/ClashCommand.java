@@ -2,8 +2,8 @@ package net.brinkervii.lovegood.commands.clash;
 
 import lombok.extern.slf4j.Slf4j;
 import net.brinkervii.lovegood.annotation.LovegoodCommand;
-import net.brinkervii.lovegood.commands.util.StacktraceUtil;
-import net.brinkervii.lovegood.core.LovegoodContext;
+import net.brinkervii.lovegood.util.StacktraceUtil;
+import net.brinkervii.lovegood.core.singletons.LovegoodContext;
 import net.brinkervii.lovegood.service.ClashUpdater;
 import net.brinkervii.lovegood.service.commands.RunnableCommand;
 import net.brinkervii.lovegood.util.MessageUtil;

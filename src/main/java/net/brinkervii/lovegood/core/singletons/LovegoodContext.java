@@ -1,6 +1,7 @@
-package net.brinkervii.lovegood.core;
+package net.brinkervii.lovegood.core.singletons;
 
 import lombok.extern.slf4j.Slf4j;
+import net.brinkervii.lovegood.core.ApplicationProperties;
 import net.brinkervii.lovegood.jda.JDAManager;
 import net.brinkervii.lovegood.service.ClashUpdater;
 import net.dv8tion.jda.core.JDA;

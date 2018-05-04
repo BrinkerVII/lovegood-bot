@@ -1,4 +1,4 @@
-package net.brinkervii.lovegood.core;
+package net.brinkervii.lovegood.core.singletons;
 
 import java.awt.*;
 import java.io.*;

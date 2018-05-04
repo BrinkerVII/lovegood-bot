@@ -1,4 +1,4 @@
-package net.brinkervii.lovegood.core;
+package net.brinkervii.lovegood.core.singletons;
 
 public class LovegoodContextHolder {
 	private final static LovegoodContextHolder instance = new LovegoodContextHolder();

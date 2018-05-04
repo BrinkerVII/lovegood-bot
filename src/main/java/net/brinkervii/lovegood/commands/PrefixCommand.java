@@ -2,7 +2,7 @@ package net.brinkervii.lovegood.commands;
 
 import lombok.extern.slf4j.Slf4j;
 import net.brinkervii.lovegood.annotation.LovegoodCommand;
-import net.brinkervii.lovegood.core.LovegoodContext;
+import net.brinkervii.lovegood.core.singletons.LovegoodContext;
 import net.brinkervii.lovegood.service.commands.RunnableCommand;
 import net.dv8tion.jda.core.entities.MessageChannel;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;

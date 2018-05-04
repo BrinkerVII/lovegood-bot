@@ -1,14 +1,32 @@
 package net.brinkervii.lovegood.core;
 
+import net.brinkervii.lovegood.core.singletons.LovegoodContext;
+import net.brinkervii.lovegood.core.singletons.LovegoodContextHolder;
+
 import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
 
 public class InjectionProfile {
+	private static InjectionProfile globalProfile = null;
+
 	private HashMap<Class<?>, Object> profile = new HashMap<>();
 	private boolean locked = false;
 
 	public InjectionProfile() {
+	}
+
+	public static InjectionProfile getGlobalProfile() {
+		if (globalProfile != null) return globalProfile;
+
+		InjectionProfile profile = new InjectionProfile();
+		LovegoodContext context = LovegoodContextHolder.getInstance().getContext();
+		profile.provide(context);
+		profile.provide(context.getJDA());
+		profile.lock();
+
+		globalProfile = profile;
+		return globalProfile;
 	}
 
 	public InjectionProfile provide(Class<?> clazz, Object o) {

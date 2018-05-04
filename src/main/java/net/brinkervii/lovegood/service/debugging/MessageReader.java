@@ -1,15 +1,16 @@
-package net.brinkervii.lovegood.service;
+package net.brinkervii.lovegood.service.debugging;
 
 import net.brinkervii.lovegood.annotation.LovegoodService;
-import net.brinkervii.lovegood.core.LovegoodContext;
+import net.brinkervii.lovegood.annotation.LovegoodServiceParams;
+import net.brinkervii.lovegood.core.singletons.LovegoodContext;
 import net.brinkervii.lovegood.jda.LovegoodListener;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
-@LovegoodService(debug = true)
-public class MessageReader {
+@LovegoodServiceParams(debug = true)
+public class MessageReader implements LovegoodService {
 	private LovegoodContext context;
 
-	public void init() {
+	public void run() {
 		context.getJdaManager().addListener(new LovegoodListener() {
 			@Override
 			public void onMessageReceived(MessageReceivedEvent event) {

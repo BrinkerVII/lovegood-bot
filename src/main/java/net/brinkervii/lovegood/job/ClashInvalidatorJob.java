@@ -1,8 +1,8 @@
 package net.brinkervii.lovegood.job;
 
 import net.brinkervii.lovegood.commands.clash.ActiveClash;
-import net.brinkervii.lovegood.core.LovegoodContext;
-import net.brinkervii.lovegood.core.LovegoodContextHolder;
+import net.brinkervii.lovegood.core.singletons.LovegoodContext;
+import net.brinkervii.lovegood.core.singletons.LovegoodContextHolder;
 import net.brinkervii.lovegood.service.ClashUpdater;
 import org.quartz.*;
 
